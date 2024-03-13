@@ -1,0 +1,43 @@
+{
+  "network":"mainnet",
+  "node": {
+    "network":"mainnet",
+    "address":"https://BOB_RPC_ENDPOING_WITH_GET_LOGS_ENABLED",
+    "log_level":"debug"
+  },
+  "CrocSwapDex": {
+    "network": "mainnet",
+    "address": "0x0",
+    "startBlock": 0
+  },
+  "HotProxy": {
+    "network": "mainnet",
+    "address": "0x0",
+    "startBlock": 0
+  },
+  "ColdPath": {
+    "network": "mainnet",
+    "address": "0x0",
+    "startBlock": 0
+  },
+  "WarmPath": {
+    "network": "mainnet",
+    "address": "0x0",
+    "startBlock": 0
+  },
+  "MicroPaths": {
+    "network": "mainnet",
+    "address": "0x0",
+    "startBlock": 0
+  },
+  "KnockoutLiqPath": {
+    "network": "mainnet",
+    "address": "0x0",
+    "startBlock": 0
+  },
+  "KnockoutCounter": {
+    "network": "mainnet",
+    "address": "0x0",
+    "startBlock": 0
+  }
+}

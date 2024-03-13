@@ -1,0 +1,43 @@
+{
+  "network": "testnet",
+  "node": {
+      "network": "testnet",
+      "address": "https://testnet.rpc.gobob.xyz",
+      "log_level": "debug"
+  },
+  "CrocSwapDex": {
+    "network": "testnet",
+    "address": "0x302aA12bB6A9cee2782d02024986b58eBE58A246",
+    "startBlock": 6142475
+  },
+  "HotProxy": {
+    "network": "testnet",
+    "address": "0x46f6999854FF922187Ed71fa72dA16Eff436607b",
+    "startBlock": 6142771
+  },
+  "ColdPath": {
+    "network": "testnet",
+    "address": "0x87837702E1d4682d98F466Bd78F21da125a2c58A",
+    "startBlock": 6142704
+  },
+  "WarmPath": {
+    "network": "testnet",
+    "address": "0x7B794a3101594EC9aF48eF505E9f18DFbe966315",
+    "startBlock": 6142789
+  },
+  "MicroPaths": {
+    "network": "testnet",
+    "address": "0xa98320ac64923049f1b56c943656f30026402c64",
+    "startBlock": 6142785
+  },
+  "KnockoutLiqPath": {
+    "network": "testnet",
+    "address": "0x0c5b9385Cc9fa96bc26A0Ab066ac3047A8f0FFa3",
+    "startBlock": 6142774
+  },
+  "KnockoutCounter": {
+    "network": "testnet",
+    "address": "0xdC3e5232db60088D67aA7AF10595979D7eB5290f",
+    "startBlock": 6142778
+  }
+}

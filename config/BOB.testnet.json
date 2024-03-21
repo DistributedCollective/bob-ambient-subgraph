@@ -2,35 +2,35 @@
   "network": "optimism-sepolia",
   "node": {
       "network": "optimism-sepolia",
-      "address": "https://testnet.rpc.gobob.xyz",
+      "address": "https://bob-sepolia.rpc.caldera.xyz/http",
       "log_level": "debug"
   },
   "CrocSwapDex": {
-    "address": "0x302aA12bB6A9cee2782d02024986b58eBE58A246",
-    "startBlock": 6142475
+    "address": "0xdA95787c585F179BE374a241C8f0cdC25dC5A751",
+    "startBlock": 236555
   },
   "HotProxy": {
-    "address": "0x46f6999854FF922187Ed71fa72dA16Eff436607b",
-    "startBlock": 6142771
+    "address": "0x5fA95212825a474E2C75676e8D833330F261CaeD",
+    "startBlock": 236616
   },
   "ColdPath": {
-    "address": "0x87837702E1d4682d98F466Bd78F21da125a2c58A",
-    "startBlock": 6142704
+    "address": "0x0F004Fd9e9e1f884975908137F5494C3cA1D9914",
+    "startBlock": 236579
   },
   "WarmPath": {
-    "address": "0x7B794a3101594EC9aF48eF505E9f18DFbe966315",
-    "startBlock": 6142789
+    "address": "0xebE5E8866db71286242af5fbF64e9464596a40F2",
+    "startBlock": 236635
   },
   "MicroPaths": {
-    "address": "0xa98320ac64923049f1b56c943656f30026402c64",
-    "startBlock": 6142785
+    "address": "0x455647d5EF0E032FEc41B8409192255bdCEB5Fe6",
+    "startBlock": 236632
   },
   "KnockoutLiqPath": {
-    "address": "0x0c5b9385Cc9fa96bc26A0Ab066ac3047A8f0FFa3",
-    "startBlock": 6142774
+    "address": "0x998e813AF56fd0337c3F95290fE102696226D4c5",
+    "startBlock": 236620
   },
   "KnockoutCounter": {
-    "address": "0xdC3e5232db60088D67aA7AF10595979D7eB5290f",
-    "startBlock": 6142778
+    "address": "0xBF3862b39AbDCB2D129C581c2172A97b02b5F9Df",
+    "startBlock": 236624
   }
 }

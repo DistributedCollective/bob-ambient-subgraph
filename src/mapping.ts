@@ -1,5 +1,5 @@
 // Import basic data types
-import { BigInt, Bytes, ByteArray, Address, BigDecimal, ethereum, crypto, dataSource } from "@graphprotocol/graph-ts"
+import { BigInt, Bytes, ByteArray, Address, BigDecimal, ethereum, crypto, dataSource, log } from "@graphprotocol/graph-ts"
 
 // Import interfaces for call handlers
 import { SwapCall } from "../generated/CrocSwapDex/CrocSwapDex"
@@ -243,8 +243,8 @@ export function handleSwap(transaction: Bytes, userAddress: Address, poolHash: B
   saveCallIndex(entityType, transaction, callIndex)
 
   if (dex === "croc") {
-    handleBalanceChange(transaction, blockNumber, timestamp, userAddress, Address.fromBytes(Pool.load(poolHash)!.base))
-    handleBalanceChange(transaction, blockNumber, timestamp, userAddress, Address.fromBytes(Pool.load(poolHash)!.quote))
+    // handleBalanceChange(transaction, blockNumber, timestamp, userAddress, Address.fromBytes(Pool.load(poolHash)!.base))
+    // handleBalanceChange(transaction, blockNumber, timestamp, userAddress, Address.fromBytes(Pool.load(poolHash)!.quote))
   }
 
   const eventIndex = getNextCallIndex(AGG_ENTITY_LABEL, transaction)
@@ -442,6 +442,11 @@ export function handleColdPath(inputs: Bytes, transaction: ethereum.Transaction,
   const transferSurplusCode = 75
 
   const cmdCode = inputs[31]
+
+  log.error("handleColdPath cmdCode: {}", [cmdCode.toString()])
+
+  // todo: print cmdCode to see what it is
+
   if (cmdCode === initPoolCode) {
     const params = decodeAbi(inputs, "(uint8,address,address,uint256,uint128)")
     const base = params[1].toAddress()

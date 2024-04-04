@@ -798,15 +798,15 @@ export function handleSweepSwapCall(call: SweepSwapCall): void {
 
 // event CrocMicroSwap(bytes input, bytes output);
 export function handleSweepSwapEvent(event: CrocMicroSwap): void {
-  const inputs = decodeAbi(event.params.input, "((uint128,uint128,uint128,uint64,uint64),int24,(bool,bool,uint8,uint128,uint128),((uint8,uint16,uint8,uint16,uint8,uint8,uint8),bytes32,address))")
-  const outputs = decodeAbi(event.params.output, "((int128,int128,uint128,uint128),uint128,uint128,uint128,uint64,uint64)")
+  const inputs = decodeAbi(event.params.input, "(uint128,uint128,uint128,uint64,uint64,int24,bool,bool,uint8,uint128,uint128,uint8,uint16,uint8,uint16,uint8,uint8,uint8,bytes32,address)")
+  const outputs = decodeAbi(event.params.output, "(int128,int128,uint128,uint128,uint128,uint128,uint128,uint64,uint64)")
   const poolHash = inputs[18].toBytes()
   const isBuy = inputs[6].toBoolean()
   const inBaseQty = inputs[7].toBoolean()
   const qty = inputs[9].toBigInt()
   const limitPrice = inputs[10].toBigInt()
   const baseFlow = outputs[0].toBigInt()
-  const quoteFlow = outputs[1].toBigInt()
+  const quoteFlow = outputs[1].toBigInt() 
 
   handleSwap(
     event.transaction.hash,

@@ -1,5 +1,5 @@
 // Import basic data types
-import { BigInt, Bytes, ByteArray, Address, BigDecimal, ethereum, crypto, dataSource, log } from "@graphprotocol/graph-ts"
+import { BigInt, Bytes, ByteArray, Address, BigDecimal, ethereum, crypto } from "@graphprotocol/graph-ts"
 
 // Import interfaces for call handlers
 import { SwapCall } from "../generated/CrocSwapDex/CrocSwapDex"
@@ -184,9 +184,8 @@ export function modifyLiquidity(transaction: Bytes, userAddress: Address, blockN
 
   const eventIndex = getNextCallIndex(AGG_ENTITY_LABEL, transaction)
 
-  const agg = new AggEvent(getUniqueCallID(transaction, callIndex))
+  const agg = new AggEvent(getUniqueCallID(transaction, eventIndex))
   agg.transactionHash = transaction
-  agg.eventIndex = callIndex
   agg.block = blockNumber
   agg.eventIndex = eventIndex
   agg.time = timestamp
@@ -243,13 +242,13 @@ export function handleSwap(transaction: Bytes, userAddress: Address, poolHash: B
   saveCallIndex(entityType, transaction, callIndex)
 
   if (dex === "croc") {
-    // handleBalanceChange(transaction, blockNumber, timestamp, userAddress, Address.fromBytes(Pool.load(poolHash)!.base))
-    // handleBalanceChange(transaction, blockNumber, timestamp, userAddress, Address.fromBytes(Pool.load(poolHash)!.quote))
+    handleBalanceChange(transaction, blockNumber, timestamp, userAddress, Address.fromBytes(Pool.load(poolHash)!.base))
+    handleBalanceChange(transaction, blockNumber, timestamp, userAddress, Address.fromBytes(Pool.load(poolHash)!.quote))
   }
 
   const eventIndex = getNextCallIndex(AGG_ENTITY_LABEL, transaction)
 
-  const agg = new AggEvent(getUniqueCallID(transaction, callIndex))
+  const agg = new AggEvent(getUniqueCallID(transaction, eventIndex))
   agg.transactionHash = transaction
   agg.eventIndex = eventIndex
   agg.block = blockNumber
@@ -395,7 +394,7 @@ export function handleDirectSwapEvent(event: CrocSwap): void {
 
 /************************ HANDLERS FOR HOTPROXY SWAPS ************************/
 
-export function handleHotProxy(inputs: Bytes, transaction: ethereum.Transaction, block: ethereum.Block, callSource: string): void {
+export function handleHotProxy(inputs: Bytes, baseFlow: BigInt, quoteFlow: BigInt, transaction: ethereum.Transaction, block: ethereum.Block, callSource: string): void {
   const params = decodeAbi(inputs, "(address,address,uint256,bool,bool,uint128,uint16,uint128,uint128,uint8)")
   const base = params[0].toAddress()
   const quote = params[1].toAddress()
@@ -417,8 +416,8 @@ export function handleHotProxy(inputs: Bytes, transaction: ethereum.Transaction,
     qty,
     limitPrice,
     minOut,
-    BigInt.fromI32(0), // replace
-    BigInt.fromI32(0), // replace
+    baseFlow,
+    quoteFlow,
     callSource,
     "croc"
   )
@@ -426,12 +425,13 @@ export function handleHotProxy(inputs: Bytes, transaction: ethereum.Transaction,
 
 // Handler for a userCmd() swap call made to HotProxy
 export function handleHotProxyCall(call: HotProxyUserCmdCall): void {
-  handleHotProxy(call.inputs.input, call.transaction, call.block, "hotproxy")
+  handleHotProxy(call.inputs.input, call.outputs.baseFlow, call.outputs.quoteFlow, 
+    call.transaction, call.block, "hotproxy")
 }
 
 // event CrocHotCmd (bytes input, int128 baseFlow, int128 quoteFlow);
 export function handleHotProxyEvent(event: CrocHotCmd): void {
-  handleHotProxy(event.params.input, event.transaction, event.block, "hotproxy_event")
+  handleHotProxy(event.params.input, event.params.baseFlow, event.params.quoteFlow, event.transaction, event.block, "hotproxy_event")
 }
 
 /******************* HANDLERS FOR COLDPATH USERCMD() CALLS *******************/
@@ -442,11 +442,6 @@ export function handleColdPath(inputs: Bytes, transaction: ethereum.Transaction,
   const transferSurplusCode = 75
 
   const cmdCode = inputs[31]
-
-  log.error("handleColdPath cmdCode: {}", [cmdCode.toString()])
-
-  // todo: print cmdCode to see what it is
-
   if (cmdCode === initPoolCode) {
     const params = decodeAbi(inputs, "(uint8,address,address,uint256,uint128)")
     const base = params[1].toAddress()

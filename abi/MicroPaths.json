@@ -33,7 +33,7 @@
         "type": "uint64"
       }
     ],
-    "name": "CrocKnockoutCross",
+    "name": "SdexKnockoutCross",
     "type": "event"
   },
   {
@@ -517,7 +517,7 @@
         "type": "bytes"
       }
     ],
-    "name": "CrocMicroBurnAmbient",
+    "name": "SdexMicroBurnAmbient",
     "type": "event"
   },
   {
@@ -536,7 +536,7 @@
         "type": "bytes"
       }
     ],
-    "name": "CrocMicroBurnRange",
+    "name": "SdexMicroBurnRange",
     "type": "event"
   },
   {
@@ -555,7 +555,7 @@
         "type": "bytes"
       }
     ],
-    "name": "CrocMicroMintAmbient",
+    "name": "SdexMicroMintAmbient",
     "type": "event"
   },
   {
@@ -574,7 +574,7 @@
         "type": "bytes"
       }
     ],
-    "name": "CrocMicroMintRange",
+    "name": "SdexMicroMintRange",
     "type": "event"
   },
   {
@@ -593,7 +593,7 @@
         "type": "bytes"
       }
     ],
-    "name": "CrocMicroSwap",
+    "name": "SdexMicroSwap",
     "type": "event"
   }
 ]

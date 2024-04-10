@@ -2,7 +2,7 @@
 import { BigInt, Bytes, ByteArray, Address, BigDecimal, ethereum, crypto } from "@graphprotocol/graph-ts"
 
 // Import interfaces for call handlers
-import { SwapCall } from "../generated/CrocSwapDex/CrocSwapDex"
+import { SwapCall } from "../generated/SdexSwapDex/SdexSwapDex"
 import { UserCmdCall as HotProxyUserCmdCall } from "../generated/HotProxy/HotProxy"
 import { UserCmdCall as ColdPathUserCmdCall, ProtocolCmdCall } from "../generated/ColdPath/ColdPath"
 import { UserCmdCall as WarmPathUserCmdCall } from "../generated/WarmPath/WarmPath"
@@ -10,15 +10,15 @@ import { MintRangeCall, MintAmbientCall, BurnRangeCall, BurnAmbientCall, SweepSw
 import { UserCmdCall as KnockoutUserCmdCall } from "../generated/KnockoutLiqPath/KnockoutLiqPath"
 
 // Import interfaces for events that are used to replace call handlers for networks that don't support Parity tracing
-import { CrocSwap } from "../generated/CrocSwapDex/CrocSwapDex"
-import { CrocHotCmd } from "../generated/HotProxy/HotProxy"
-import { CrocColdCmd, CrocColdProtocolCmd } from "../generated/ColdPath/ColdPath"
-import { CrocWarmCmd } from "../generated/WarmPath/WarmPath"
-import { CrocMicroMintAmbient, CrocMicroMintRange, CrocMicroBurnAmbient, CrocMicroBurnRange, CrocMicroSwap } from "../generated/MicroPaths/MicroPaths"
-import { CrocKnockoutCmd } from "../generated/KnockoutLiqPath/KnockoutLiqPath"
+import { SdexSwap } from "../generated/SdexSwapDex/SdexSwapDex"
+import { SdexHotCmd } from "../generated/HotProxy/HotProxy"
+import { SdexColdCmd, SdexColdProtocolCmd } from "../generated/ColdPath/ColdPath"
+import { SdexWarmCmd } from "../generated/WarmPath/WarmPath"
+import { SdexMicroMintAmbient, SdexMicroMintRange, SdexMicroBurnAmbient, SdexMicroBurnRange, SdexMicroSwap } from "../generated/MicroPaths/MicroPaths"
+import { SdexKnockoutCmd } from "../generated/KnockoutLiqPath/KnockoutLiqPath"
 
 // Import interfaces for the KnockoutCross event
-import { CrocKnockoutCross } from "../generated/KnockoutCounter/KnockoutCounter"
+import { SdexKnockoutCross } from "../generated/KnockoutCounter/KnockoutCounter"
 import { AggEvent, FeeChange, KnockoutCross, LatestIndex, LiquidityChange, Pool, PoolTemplate, Swap, UserBalance } from "../generated/schema"
 
 /***************************** DATA MANIPULATION *****************************/
@@ -93,7 +93,7 @@ export function getPoolTemplateBytes(poolIdx: BigInt): Bytes {
   return changetype<Bytes>(crypto.keccak256(encoded))
 }
 
-// Generates unique hash for a CrocKnockoutCross event
+// Generates unique hash for a SdexKnockoutCross event
 export function getKnockoutCrossHash(block: BigInt, transaction: Bytes, poolHash: Bytes, tick: i32, isBid: boolean, pivotTime: BigInt, feeMileage: BigInt): Bytes {
   return convertBigIntToBytes(block).concat(transaction).concat(poolHash).concat(convertI32ToBytes(tick)).concat(convertBooleanToBytes(isBid)).concat(convertBigIntToBytes(pivotTime)).concat(convertBigIntToBytes(feeMileage))
 }
@@ -241,7 +241,7 @@ export function handleSwap(transaction: Bytes, userAddress: Address, poolHash: B
   // Save new entity ID
   saveCallIndex(entityType, transaction, callIndex)
 
-  if (dex === "croc") {
+  if (dex === "sovryn") {
     handleBalanceChange(transaction, blockNumber, timestamp, userAddress, Address.fromBytes(Pool.load(poolHash)!.base))
     handleBalanceChange(transaction, blockNumber, timestamp, userAddress, Address.fromBytes(Pool.load(poolHash)!.quote))
   }
@@ -350,7 +350,7 @@ export function createPool(base: Address, quote: Address, poolIdx: BigInt,
 
 /*********************** HANDLERS FOR DIRECT SWAP CALLS **********************/
 
-// Handler for a swap() call made to CrocSwapDex
+// Handler for a swap() call made to SdexSwapDex
 export function handleDirectSwapCall(call: SwapCall): void {
   handleSwap(
     call.transaction.hash,
@@ -367,12 +367,12 @@ export function handleDirectSwapCall(call: SwapCall): void {
     call.outputs.baseQuote,
     call.outputs.quoteFlow,
     "hotpath",
-    "croc"
+    "sovryn"
   )
 }
 
-// event CrocSwap (address indexed base, address indexed quote, uint256 poolIdx, bool isBuy, bool inBaseQty, uint128 qty, uint16 tip, uint128 limitPrice, uint128 minOut, uint8 reserveFlags, int128 baseFlow, int128 quoteFlow);
-export function handleDirectSwapEvent(event: CrocSwap): void {
+// event SdexSwap (address indexed base, address indexed quote, uint256 poolIdx, bool isBuy, bool inBaseQty, uint128 qty, uint16 tip, uint128 limitPrice, uint128 minOut, uint8 reserveFlags, int128 baseFlow, int128 quoteFlow);
+export function handleDirectSwapEvent(event: SdexSwap): void {
   handleSwap(
     event.transaction.hash,
     event.transaction.from,
@@ -388,7 +388,7 @@ export function handleDirectSwapEvent(event: CrocSwap): void {
     event.params.baseFlow,
     event.params.quoteFlow,
     "hotpath_event",
-    "croc"
+    "sovryn"
   )
 }
 
@@ -419,7 +419,7 @@ export function handleHotProxy(inputs: Bytes, baseFlow: BigInt, quoteFlow: BigIn
     baseFlow,
     quoteFlow,
     callSource,
-    "croc"
+    "sovryn"
   )
 }
 
@@ -429,8 +429,8 @@ export function handleHotProxyCall(call: HotProxyUserCmdCall): void {
     call.transaction, call.block, "hotproxy")
 }
 
-// event CrocHotCmd (bytes input, int128 baseFlow, int128 quoteFlow);
-export function handleHotProxyEvent(event: CrocHotCmd): void {
+// event SdexHotCmd (bytes input, int128 baseFlow, int128 quoteFlow);
+export function handleHotProxyEvent(event: SdexHotCmd): void {
   handleHotProxy(event.params.input, event.params.baseFlow, event.params.quoteFlow, event.transaction, event.block, "hotproxy_event")
 }
 
@@ -470,8 +470,8 @@ export function handleColdPathCall(call: ColdPathUserCmdCall): void {
 }
 
 
-// event CrocColdCmd (bytes input);
-export function handleColdPathEvent(event: CrocColdCmd): void {
+// event SdexColdCmd (bytes input);
+export function handleColdPathEvent(event: SdexColdCmd): void {
   handleColdPath(event.params.input, event.transaction, event.block)
 }
 
@@ -526,8 +526,8 @@ export function handleColdPathProtocolCmdCall(call: ProtocolCmdCall): void {
   handleColdPathProtocolCmd(call.inputs.cmd, call.transaction, call.block)
 }
 
-// event CrocColdProtocolCmd (bytes input);
-export function handleColdPathProtocolCmdEvent(event: CrocColdProtocolCmd): void {
+// event SdexColdProtocolCmd (bytes input);
+export function handleColdPathProtocolCmdEvent(event: SdexColdProtocolCmd): void {
   handleColdPathProtocolCmd(event.params.input, event.transaction, event.block)
 }
 
@@ -574,8 +574,8 @@ export function handleWarmPathCall(call: WarmPathUserCmdCall): void {
   handleWarmPath(call.inputs.input, call.transaction, call.block, call.outputs.baseFlow, call.outputs.quoteFlow, "warmpath")
 }
 
-// event CrocWarmCmd (bytes input, int128 baseFlow, int128 quoteFlow);
-export function handleWarmPathEvent(event: CrocWarmCmd): void {
+// event SdexWarmCmd (bytes input, int128 baseFlow, int128 quoteFlow);
+export function handleWarmPathEvent(event: SdexWarmCmd): void {
   handleWarmPath(event.params.input, event.transaction, event.block, event.params.baseFlow, event.params.quoteFlow, "warmpath_event")
 }
 
@@ -619,8 +619,8 @@ export function handleMintRangeCall(call: MintRangeCall): void {
   )
 }
 
-// event CrocMicroMintRange(bytes input, bytes output);
-export function handleMintRangeEvent(event: CrocMicroMintRange): void {
+// event SdexMicroMintRange(bytes input, bytes output);
+export function handleMintRangeEvent(event: SdexMicroMintRange): void {
   const inputs = decodeAbi(event.params.input, "(uint128,int24,uint128,uint128,uint64,uint64,int24,int24,uint128,bytes32)")
   const outputs = decodeAbi(event.params.output, "(int128,int128,uint128,uint128)")
   const bidTick = inputs[6].toI32()
@@ -662,8 +662,8 @@ export function handleMintAmbientCall(call: MintAmbientCall): void {
   )
 }
 
-// event CrocMicroMintAmbient(bytes input, bytes output);
-export function handleMintAmbientEvent(event: CrocMicroMintAmbient): void {
+// event SdexMicroMintAmbient(bytes input, bytes output);
+export function handleMintAmbientEvent(event: SdexMicroMintAmbient): void {
   const inputs = decodeAbi(event.params.input, "(uint128,uint128,uint128,uint64,uint64,uint128,bytes32)")
   const outputs = decodeAbi(event.params.output, "(int128,int128,uint128)")
   const liq = inputs[5].toBigInt()
@@ -703,8 +703,8 @@ export function handleBurnRangeCall(call: BurnRangeCall): void {
   )
 }
 
-// event CrocMicroBurnRange(bytes input, bytes output);
-export function handleBurnRangeEvent(event: CrocMicroBurnRange): void {
+// event SdexMicroBurnRange(bytes input, bytes output);
+export function handleBurnRangeEvent(event: SdexMicroBurnRange): void {
   const inputs = decodeAbi(event.params.input, "(uint128,int24,uint128,uint128,uint64,uint64,int24,int24,uint128,bytes32)")
   const outputs = decodeAbi(event.params.output, "(int128,int128,uint128,uint128)")
   const bidTick = inputs[6].toI32()
@@ -746,8 +746,8 @@ export function handleBurnAmbientCall(call: BurnAmbientCall): void {
   )
 }
 
-// event CrocMicroBurnAmbient(bytes input, bytes output);
-export function handleBurnAmbientEvent(event: CrocMicroBurnAmbient): void {
+// event SdexMicroBurnAmbient(bytes input, bytes output);
+export function handleBurnAmbientEvent(event: SdexMicroBurnAmbient): void {
   const inputs = decodeAbi(event.params.input, "(uint128,uint128,uint128,uint64,uint64,uint128,bytes32)")
   const outputs = decodeAbi(event.params.output, "(int128,int128,uint128)")
   const liq = inputs[5].toBigInt()
@@ -787,12 +787,12 @@ export function handleSweepSwapCall(call: SweepSwapCall): void {
     call.outputs.accum.baseFlow_,
     call.outputs.accum.quoteFlow_,
     "micropath",
-    "croc"
+    "sovryn"
   )
 }
 
-// event CrocMicroSwap(bytes input, bytes output);
-export function handleSweepSwapEvent(event: CrocMicroSwap): void {
+// event SdexMicroSwap(bytes input, bytes output);
+export function handleSweepSwapEvent(event: SdexMicroSwap): void {
   const inputs = decodeAbi(event.params.input, "(uint128,uint128,uint128,uint64,uint64,int24,bool,bool,uint8,uint128,uint128,uint8,uint16,uint8,uint16,uint8,uint8,uint8,bytes32,address)")
   const outputs = decodeAbi(event.params.output, "(int128,int128,uint128,uint128,uint128,uint128,uint128,uint64,uint64)")
   const poolHash = inputs[18].toBytes()
@@ -818,7 +818,7 @@ export function handleSweepSwapEvent(event: CrocMicroSwap): void {
     baseFlow,
     quoteFlow,
     "micropath_event",
-    "croc"
+    "sovryn"
   )
 }
 
@@ -890,15 +890,15 @@ export function handleKnockoutCmdCall(call: KnockoutUserCmdCall): void {
   handleKnockoutCmd(call.inputs.cmd, call.transaction, call.block, call.outputs.baseFlow, call.outputs.quoteFlow, "knockout")
 }
 
-// event CrocKnockoutCmd (bytes input, int128 baseFlow, int128 quoteFlow);
-export function handleKnockoutCmdEvent(event: CrocKnockoutCmd): void {
+// event SdexKnockoutCmd (bytes input, int128 baseFlow, int128 quoteFlow);
+export function handleKnockoutCmdEvent(event: SdexKnockoutCmd): void {
   handleKnockoutCmd(event.params.input, event.transaction, event.block, event.params.baseFlow, event.params.quoteFlow, "knockout_event")
 }
 
 /********************** HANDLER FOR KNOCKOUTCROSS EVENTS *********************/
 
-// Handler for a CrocKnockoutCross event emission
-export function handleKnockoutCross(event: CrocKnockoutCross): void { 
+// Handler for a SdexKnockoutCross event emission
+export function handleKnockoutCross(event: SdexKnockoutCross): void { 
   const cross = new KnockoutCross(getKnockoutCrossHash(event.block.number, event.transaction.hash, event.params.pool, event.params.tick, event.params.isBid, event.params.pivotTime, event.params.feeMileage))
   cross.block = event.block.number
   cross.time = event.block.timestamp

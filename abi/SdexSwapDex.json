@@ -55,7 +55,7 @@
         "type": "uint160"
       }
     ],
-    "name": "CrocKnockoutCross",
+    "name": "SdexKnockoutCross",
     "type": "event"
   },
   {
@@ -348,7 +348,7 @@
         "type": "int128"
       }
     ],
-    "name": "CrocSwap",
+    "name": "SdexSwap",
     "type": "event"
   }
 ]

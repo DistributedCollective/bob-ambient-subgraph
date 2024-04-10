@@ -33,7 +33,7 @@
         "type": "uint64"
       }
     ],
-    "name": "CrocKnockoutCross",
+    "name": "SdexKnockoutCross",
     "type": "event"
   },
   {
@@ -82,7 +82,7 @@
         "type": "int128"
       }
     ],
-    "name": "CrocKnockoutCmd",
+    "name": "SdexKnockoutCmd",
     "type": "event"
   }
 ]

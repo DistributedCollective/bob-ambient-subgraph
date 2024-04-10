@@ -33,7 +33,7 @@
         "type": "uint64"
       }
     ],
-    "name": "CrocKnockoutCross",
+    "name": "SdexKnockoutCross",
     "type": "event"
   },
   {
@@ -72,7 +72,7 @@
         "type": "bytes"
       }
     ],
-    "name": "CrocColdCmd",
+    "name": "SdexColdCmd",
     "type": "event"
   },
   {
@@ -85,7 +85,7 @@
         "type": "bytes"
       }
     ],
-    "name": "CrocColdProtocolCmd",
+    "name": "SdexColdProtocolCmd",
     "type": "event"
   }
 ]

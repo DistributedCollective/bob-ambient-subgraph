@@ -5,32 +5,8 @@
       "address": "https://sepolia-dencun.rpc.gobob.xyz",
       "log_level": "debug"
   },
-  "CrocSwapDex": {
-    "address": "0xdA95787c585F179BE374a241C8f0cdC25dC5A751",
-    "startBlock": 576078
-  },
-  "HotProxy": {
-    "address": "0xdA95787c585F179BE374a241C8f0cdC25dC5A751",
-    "startBlock": 576078
-  },
-  "ColdPath": {
-    "address": "0xdA95787c585F179BE374a241C8f0cdC25dC5A751",
-    "startBlock": 576078
-  },
-  "WarmPath": {
-    "address": "0xdA95787c585F179BE374a241C8f0cdC25dC5A751",
-    "startBlock": 576078
-  },
-  "MicroPaths": {
-    "address": "0xdA95787c585F179BE374a241C8f0cdC25dC5A751",
-    "startBlock": 576078
-  },
-  "KnockoutLiqPath": {
-    "address": "0xdA95787c585F179BE374a241C8f0cdC25dC5A751",
-    "startBlock":  576078
-  },
-  "KnockoutCounter": {
-    "address": "0xdA95787c585F179BE374a241C8f0cdC25dC5A751",
-    "startBlock": 576078
+  "SdexSwapDex": {
+    "address": "0x11E94005FD6cBb8241785d8aD225D4F3fBdd552A",
+    "startBlock": 820959
   }
 }

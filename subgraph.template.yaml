@@ -6,12 +6,12 @@ schema:
 
 dataSources:
   - kind: ethereum
-    name: CrocSwapDex
+    name: SdexSwapDex
     network: {{network}}
     source:
-      abi: CrocSwapDex
-      address: '{{CrocSwapDex.address}}'
-      startBlock: {{CrocSwapDex.startBlock}}
+      abi: SdexSwapDex
+      address: '{{SdexSwapDex.address}}'
+      startBlock: {{SdexSwapDex.startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -23,10 +23,10 @@ dataSources:
         - LiquidityChange
         - KnockoutCross
       abis:
-        - name: CrocSwapDex
-          file: ./abi/CrocSwapDex.json
+        - name: SdexSwapDex
+          file: ./abi/SdexSwapDex.json
       eventHandlers:
-        - event: CrocSwap(indexed address,indexed address,uint256,bool,bool,uint128,uint16,uint128,uint128,uint8,int128,int128)
+        - event: SdexSwap(indexed address,indexed address,uint256,bool,bool,uint128,uint16,uint128,uint128,uint8,int128,int128)
           handler: handleDirectSwapEvent
       file: ./src/mapping.ts
   - kind: ethereum
@@ -34,8 +34,8 @@ dataSources:
     network: {{network}}
     source:
       abi: HotProxy
-      address: '{{HotProxy.address}}'
-      startBlock: {{HotProxy.startBlock}}
+      address: '{{SdexSwapDex.address}}'
+      startBlock: {{SdexSwapDex.startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -46,7 +46,7 @@ dataSources:
         - name: HotProxy
           file: ./abi/HotProxy.json
       eventHandlers:
-        - event: CrocHotCmd(bytes,int128,int128)
+        - event: SdexHotCmd(bytes,int128,int128)
           handler: handleHotProxyEvent
       file: ./src/mapping.ts
   - kind: ethereum
@@ -54,8 +54,8 @@ dataSources:
     network: {{network}}
     source:
       abi: ColdPath
-      address: '{{ColdPath.address}}'
-      startBlock: {{ColdPath.startBlock}}
+      address: '{{SdexSwapDex.address}}'
+      startBlock: {{SdexSwapDex.startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -66,9 +66,9 @@ dataSources:
         - name: ColdPath
           file: ./abi/ColdPath.json
       eventHandlers:
-        - event: CrocColdCmd(bytes)
+        - event: SdexColdCmd(bytes)
           handler: handleColdPathEvent
-        - event: CrocColdProtocolCmd(bytes)
+        - event: SdexColdProtocolCmd(bytes)
           handler: handleColdPathProtocolCmdEvent
       file: ./src/mapping.ts
   - kind: ethereum
@@ -76,8 +76,8 @@ dataSources:
     network: {{network}}
     source:
       abi: WarmPath
-      address: '{{WarmPath.address}}'
-      startBlock: {{WarmPath.startBlock}}
+      address: '{{SdexSwapDex.address}}'
+      startBlock: {{SdexSwapDex.startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -89,7 +89,7 @@ dataSources:
         - name: WarmPath
           file: ./abi/WarmPath.json
       eventHandlers:
-        - event: CrocWarmCmd(bytes,int128,int128)
+        - event: SdexWarmCmd(bytes,int128,int128)
           handler: handleWarmPathEvent
       file: ./src/mapping.ts
   - kind: ethereum
@@ -97,8 +97,8 @@ dataSources:
     network: {{network}}
     source:
       abi: MicroPaths
-      address: '{{MicroPaths.address}}'
-      startBlock: {{MicroPaths.startBlock}}
+      address: '{{SdexSwapDex.address}}'
+      startBlock: {{SdexSwapDex.startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -111,15 +111,15 @@ dataSources:
         - name: MicroPaths
           file: ./abi/MicroPaths.json
       eventHandlers:
-        - event: CrocMicroMintAmbient(bytes,bytes)
+        - event: SdexMicroMintAmbient(bytes,bytes)
           handler: handleMintAmbientEvent
-        - event: CrocMicroMintRange(bytes,bytes)
+        - event: SdexMicroMintRange(bytes,bytes)
           handler: handleMintRangeEvent
-        - event: CrocMicroBurnAmbient(bytes,bytes)
+        - event: SdexMicroBurnAmbient(bytes,bytes)
           handler: handleBurnAmbientEvent
-        - event: CrocMicroBurnRange(bytes,bytes)
+        - event: SdexMicroBurnRange(bytes,bytes)
           handler: handleBurnRangeEvent
-        - event: CrocMicroSwap(bytes,bytes)
+        - event: SdexMicroSwap(bytes,bytes)
           handler: handleSweepSwapEvent
       file: ./src/mapping.ts
   - kind: ethereum
@@ -127,8 +127,8 @@ dataSources:
     network: {{network}}
     source:
       abi: KnockoutLiqPath
-      address: '{{KnockoutLiqPath.address}}'
-      startBlock: {{KnockoutLiqPath.startBlock}}
+      address: '{{SdexSwapDex.address}}'
+      startBlock: {{SdexSwapDex.startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -140,7 +140,7 @@ dataSources:
         - name: KnockoutLiqPath
           file: ./abi/KnockoutLiqPath.json
       eventHandlers:
-        - event: CrocKnockoutCmd(bytes,int128,int128)
+        - event: SdexKnockoutCmd(bytes,int128,int128)
           handler: handleKnockoutCmdEvent
       file: ./src/mapping.ts
   - kind: ethereum
@@ -148,8 +148,8 @@ dataSources:
     network: {{network}}
     source:
       abi: KnockoutCounter
-      address: '{{KnockoutCounter.address}}'
-      startBlock: {{KnockoutCounter.startBlock}}
+      address: '{{SdexSwapDex.address}}'
+      startBlock: {{SdexSwapDex.startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -162,6 +162,6 @@ dataSources:
         - name: KnockoutCounter
           file: ./abi/KnockoutCounter.json
       eventHandlers:
-        - event: CrocKnockoutCross(indexed bytes32,indexed int24,bool,uint32,uint64,uint160)
+        - event: SdexKnockoutCross(indexed bytes32,indexed int24,bool,uint32,uint64,uint160)
           handler: handleKnockoutCross
       file: ./src/mapping.ts

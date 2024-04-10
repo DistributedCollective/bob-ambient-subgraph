@@ -39,7 +39,7 @@
         "type": "uint160"
       }
     ],
-    "name": "CrocKnockoutCross",
+    "name": "SdexKnockoutCross",
     "type": "event"
   }
 ]

@@ -19,6 +19,7 @@
     "prepare": "husky install",
     "prepare:BOB:testnet": "sh ./scripts/prepare_testnet.sh",
     "prepare:BOB:mainnet": "sh ./scripts/prepare_mainnet.sh",
+    "prepare:SEPOLIA:testnet": "sh ./scripts/prepare_sepolia.sh",
     "prepare:testnet": "sh ./scripts/prepare_testnet.sh",
     "prepare:mainnet": "sh ./scripts/prepare_mainnet.sh",
     "test-start-block": "node -r esm utils/startFromLaterBlock.js",

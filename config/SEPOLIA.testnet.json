@@ -1,0 +1,12 @@
+{
+  "network": "sepolia",
+  "node": {
+      "network": "sepolia",
+      "address": "https://ethereum-sepolia-rpc.publicnode.com",
+      "log_level": "debug"
+  },
+  "SdexSwapDex": {
+    "address": "0xad2Ef29985c20d5980dE28c3CbBD0355AB29F9A4",
+    "startBlock": 5688648
+  }
+}

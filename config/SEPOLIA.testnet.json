@@ -2,7 +2,7 @@
   "network": "sepolia",
   "node": {
       "network": "sepolia",
-      "address": "https://rpc.ankr.com/eth_sepolia",
+      "address": "https://eth-sepolia-worker.sovryn.workers.dev/testnet",
       "log_level": "info"
   },
   "SdexSwapDex": {

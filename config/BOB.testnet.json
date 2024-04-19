@@ -2,11 +2,11 @@
   "network": "optimism-sepolia",
   "node": {
       "network": "optimism-sepolia",
-      "address": "https://sepolia-dencun.rpc.gobob.xyz",
+      "address": "https://testnet.rpc.gobob.xyz",
       "log_level": "debug"
   },
   "SdexSwapDex": {
-    "address": "0x11E94005FD6cBb8241785d8aD225D4F3fBdd552A",
-    "startBlock": 820959
+    "address": "0xA86F239490bd35923eCBD578C2A8989803294bee",
+    "startBlock": 8239124
   }
 }

@@ -2,11 +2,11 @@
   "network":"optimism",
   "node": {
     "network": "optimism",
-    "address":"https://BOB_RPC_ENDPOING_WITH_GET_LOGS_ENABLED",
-    "log_level":"debug"
+    "address":"https://rpc.gobob.xyz",
+    "log_level":"info"
   },
   "SdexSwapDex": {
-    "address": "0x0",
-    "startBlock": 0
+    "address": "0xe5bc234A484A912A61Aa74501960cFc202e773dA",
+    "startBlock": 455577
   }
 }

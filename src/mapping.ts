@@ -14,6 +14,7 @@ import { SdexSwap } from "../generated/SdexSwapDex/SdexSwapDex"
 import { SdexHotCmd } from "../generated/HotProxy/HotProxy"
 import { SdexColdCmd, SdexColdProtocolCmd } from "../generated/ColdPath/ColdPath"
 import { SdexWarmCmd } from "../generated/WarmPath/WarmPath"
+import { SdexWarmCmd as SdexWarmCmdWithSender } from "../generated/WarmPathWithSender/WarmPathWithSender"
 import { SdexMicroMintAmbient, SdexMicroMintRange, SdexMicroBurnAmbient, SdexMicroBurnRange, SdexMicroSwap } from "../generated/MicroPaths/MicroPaths"
 import { SdexKnockoutCmd } from "../generated/KnockoutLiqPath/KnockoutLiqPath"
 
@@ -577,6 +578,49 @@ export function handleWarmPathCall(call: WarmPathUserCmdCall): void {
 // event SdexWarmCmd (bytes input, int128 baseFlow, int128 quoteFlow);
 export function handleWarmPathEvent(event: SdexWarmCmd): void {
   handleWarmPath(event.params.input, event.transaction, event.block, event.params.baseFlow, event.params.quoteFlow, "warmpath_event")
+}
+
+/******************* HANDLERS FOR WARMPATH USERCMD() CALLS *******************/
+
+export function handleWarmPathWithSender(sender: Address, inputs: Bytes, transaction: ethereum.Transaction, block: ethereum.Block, baseFlow: BigInt, quoteFlow: BigInt, callSource: string): void {
+  const code = inputs[31]
+  const isMint = code == 1 || code == 11 || code == 12 || code == 3 || code == 31 || code == 32
+  const isBurn = code == 2 || code == 21 || code == 22 || code == 4 || code == 41 || code == 42
+  const isHarvest = code == 5
+
+  if (isMint || isBurn || isHarvest) {
+    const params = decodeAbi(inputs, "(uint8,address,address,uint256,int24,int24,uint128,uint128,uint128,uint8,address)")
+    const base = params[1].toAddress()
+    const quote = params[2].toAddress()
+    const poolIdx = params[3].toBigInt()
+    const poolHash = getPoolHash(base, quote, poolIdx)
+    const ambient = code == 3 || code == 31 || code == 32 || code == 4 || code == 41 || code == 42
+    const bidTick = ambient ? 0 : params[4].toI32()
+    const askTick = ambient ? 0 : params[5].toI32()
+    const liq = params[6].toBigInt()
+    modifyLiquidity(
+      transaction.hash,
+      sender,
+      block.number,
+      block.timestamp,
+      poolHash,
+      ambient ? "ambient" : "concentrated",
+      isMint ? "mint" : (isBurn ? "burn" : "harvest"),
+      bidTick,
+      askTick,
+      false,
+      liq,
+      baseFlow,
+      quoteFlow,
+      callSource,
+      null
+    )
+  }
+}
+
+// event SdexWarmCmd (bytes input, int128 baseFlow, int128 quoteFlow);
+export function handleWarmPathEventWithSender(event: SdexWarmCmdWithSender): void {
+  handleWarmPathWithSender(event.params.sender, event.params.input, event.transaction, event.block, event.params.baseFlow, event.params.quoteFlow, "warmpath_event")
 }
 
 /********************* HANDLERS FOR ALL MICROPATHS CALLS *********************/

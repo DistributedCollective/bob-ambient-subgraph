@@ -93,6 +93,27 @@ dataSources:
           handler: handleWarmPathEvent
       file: ./src/mapping.ts
   - kind: ethereum
+    name: WarmPathWithSender
+    network: {{network}}
+    source:
+      abi: WarmPathWithSender
+      address: '{{SdexSwapDex.address}}'
+      startBlock: {{SdexSwapDex.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Position
+        - LiquidityChange
+      abis:
+        - name: WarmPathWithSender
+          file: ./abi/WarmPathWithSender.json
+      eventHandlers:
+        - event: SdexWarmCmd(address,bytes,int128,int128)
+          handler: handleWarmPathEventWithSender
+      file: ./src/mapping.ts
+  - kind: ethereum
     name: MicroPaths
     network: {{network}}
     source:

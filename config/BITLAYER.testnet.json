@@ -1,0 +1,12 @@
+{
+  "network":"arbitrum-one",
+  "node": {
+    "network": "arbitrum-one",
+    "address": "https://testnet-rpc.bitlayer.org",
+    "log_level":"info"
+  },
+  "SdexSwapDex": {
+    "address": "0x701C1331AABf09F66E3f62455c7D1b4A3924E5C3",
+    "startBlock": 3950337
+  }
+}

@@ -2,7 +2,7 @@
   "network": "optimism-sepolia",
   "node": {
       "network": "optimism-sepolia",
-      "address": "https://bob-sepolia.rpc.gobob.xyz/",
+      "address": "https://bob-rpc.test.sovryn.app",
       "log_level": "debug"
   },
   "SdexSwapDex": {
